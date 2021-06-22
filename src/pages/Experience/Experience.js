@@ -7,6 +7,7 @@ import {
 } from 'reactstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import TextField from '@material-ui/core/TextField';
 
 function Experience({ savedExperience, error, isLoading, saveExperience }) {
 
@@ -21,6 +22,7 @@ function Experience({ savedExperience, error, isLoading, saveExperience }) {
 
     const onSubmit = () => {
         saveExperience(model);
+        setModel({})
     };
 
     return (
@@ -56,6 +58,36 @@ function Experience({ savedExperience, error, isLoading, saveExperience }) {
                                             <Label for="summary" sm="4">Summary</Label>
                                             <Col sm="8">
                                                 <Input type="text" id="summary" name="summary" value={model.summary} onChange={(e) => setModel({ ...model, summary: e.target.value })} placeholder="Enter summary" />
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Label for="startDate" sm="4">Start Date</Label>
+                                            <Col sm="8">
+                                                <TextField
+                                                    id="date"
+                                                    label="start date"
+                                                    type="date"                        
+                                                    value={model.start_date}
+                                                    onChange={(e) => setModel({ ...model, start_date: e.target.value })}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Label for="endDate" sm="4">End Date</Label>
+                                            <Col sm="8">
+                                                <TextField
+                                                    id="date"
+                                                    label="end date"
+                                                    type="date"                        
+                                                    value={model.end_date}
+                                                    onChange={(e) => setModel({ ...model, end_date: e.target.value })}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                />
                                             </Col>
                                         </FormGroup>
                                         <FormGroup>
