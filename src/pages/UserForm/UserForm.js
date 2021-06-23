@@ -7,10 +7,32 @@ import {
 } from 'reactstrap';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
 
-function UserForm({ savedUser, user, error, isLoading, saveUser, findUserById }) {
 
+const useStyles = makeStyles((theme) => ({
+    button: {
+      display: 'block',
+      marginTop: theme.spacing(2),
+    },
+    select: {
+      width: 520,
+    },
+  }));
+
+function UserForm({ savedUser, user, error, 
+    isLoading, saveUser, findUserById, 
+    educations, experiences }) {
+
+    const classes = useStyles();
     const [model, setModel] = useState({});
+    const [schools, setSchools] = useState([]);
+    const [experience, setExperience] = useState([])
+    const [openEdu, setOpenEdu] = useState(false);
+    const [openExp, setOpenExp] = useState(false);
+
     const history = useHistory();
 
     const { id } = useParams();
@@ -32,8 +54,23 @@ function UserForm({ savedUser, user, error, isLoading, saveUser, findUserById })
         }
     }, [savedUser, history]);
 
+    const handleCloseEdu = () => {
+        setOpenEdu(false);
+    };
+    const handleCloseExp = () => {
+        setOpenExp(false);
+    };
+
+    const handleOpenEdu = () => {
+        setOpenEdu(true);
+    };
+    const handleOpenExp = () => {
+        setOpenExp(true);
+    };
+
     const onSubmit = () => {
         saveUser(model);
+        setModel({})
     };
 
     return (
@@ -77,6 +114,56 @@ function UserForm({ savedUser, user, error, isLoading, saveUser, findUserById })
                                                 <Input type="text" id="address" name="address" value={model.address} onChange={(e) => setModel({ ...model, address: e.target.value })} placeholder="Enter address" />
                                             </Col>
                                         </FormGroup>
+                                        <FormGroup row >
+                                            <Label for="education" sm="4">Education</Label>
+                                            <Col sm="8">
+                                                <Select
+                                                    labelId="education"
+                                                    id="education"
+                                                    open={openEdu}
+                                                    onClose={handleCloseEdu}
+                                                    onOpen={handleOpenEdu}
+                                                    value={model.user_educations}
+                                                    className={classes.select}
+                                                    onChange={(e)=> setModel({ ...model, user_educations: e.target.value })}
+                                                >
+                                                {
+                                                    !isLoading ?
+                                                    educations.map((edu, i) => {
+                                                        return (
+                                                            <MenuItem value={edu.id} key={i}>{edu.school}</MenuItem>
+                                                        )
+                                                    })
+                                                    : <div>Loading</div>
+                                                }
+                                                </Select>
+                                            </Col>
+                                        </FormGroup>
+                                        <FormGroup row>
+                                            <Label for="experience" sm="4">Experience</Label>
+                                            <Col sm="8">
+                                                <Select
+                                                    labelId="experience"
+                                                    id="experience"
+                                                    open={openExp}
+                                                    onClose={handleCloseExp}
+                                                    onOpen={handleOpenExp}
+                                                    value={model.user_experiences}
+                                                    onChange={(e)=> setModel({ ...model, user_experiences: e.target.value })}
+                                                    className={classes.select}
+                                                >
+                                                {
+                                                    !isLoading ?
+                                                    experiences.map((exp, i) => {
+                                                        return (
+                                                            <MenuItem value={exp.id} key={i}>{exp.company}</MenuItem>
+                                                        )
+                                                    })
+                                                    : <div>Loading</div>
+                                                }
+                                                </Select>
+                                            </Col>
+                                        </FormGroup>
                                         <FormGroup>
                                             <Col sm={{ size: 8, offset: 4 }}>
                                                 <Button type="submit" color="success" className="shadow" >
@@ -103,7 +190,9 @@ const mapStateToProps = (state) => {
         error: state.findUserById.error || state.saveUser.error,
         isLoading: state.findUserById.loading || state.saveUser.loading,
         user: state.findUserById.data,
-        savedUser: state.saveUser.data
+        savedUser: state.saveUser.data,
+        educations: state.findAllEducation.data || [],
+        experiences: state.findAllExperience.data || []
     }
 }
 
