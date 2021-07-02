@@ -5,8 +5,8 @@ import {
     CardSubtitle, Row, Col, Navbar, NavbarBrand, NavbarToggler,
     Nav, Spinner, Table, CardHeader
 } from 'reactstrap';
-import { Link, useHistory } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useEffect, useState, Fragment } from 'react';
 
 function UserList({ findAllUser, removeUserById, isRemoved, users, isLoading }) {
 
@@ -55,17 +55,19 @@ function UserList({ findAllUser, removeUserById, isRemoved, users, isLoading }) 
     }
 
     return (
-        <div>
-            <div>
+        <Fragment>
+            <Col>
                 <Navbar color="muted" dark>
                     <NavbarBrand href="/dashboard" className="mr-auto d-inline-flex p-2">
                         <img src="https://www.ekrut.com/assets/global/ekrut-logo.png" width="80" height="60" />
                     </NavbarBrand>
                 </Navbar>
+                </Col>
+                <Col>
                 <Card className="shadow">
-                    <CardHeader tag='strong'> Employee
+                    <CardHeader tag='strong'>
                         <Link to='/users/form' className="float-right">
-                            <Button type="button" color="primary">Create Employee </Button>
+                            <Button type="button" color="primary">+ Create Employee </Button>
                         </Link>
                     </CardHeader>
                     <Table responsive striped hover className='m-0'>
@@ -82,8 +84,8 @@ function UserList({ findAllUser, removeUserById, isRemoved, users, isLoading }) 
                         <tbody>{generatedTableRows()}</tbody>
                     </Table>
                 </Card>
-            </div>
-        </div>
+            </Col>
+        </Fragment>
     )
 }
 
