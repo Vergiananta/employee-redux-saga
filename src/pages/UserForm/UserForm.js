@@ -169,7 +169,7 @@ function UserForm({ savedUser, user, error,
                                                 <Button type="submit" color="success" className="shadow" >
                                                     Submit
                                                 </Button>
-                                                <Link to="/user">
+                                                <Link to="/users">
                                                     <Button type="reset" color="secondary">Return</Button>
                                                 </Link>
                                             </Col>
